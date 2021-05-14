@@ -1,0 +1,138 @@
+#  IMPORTANT notes!!!
+
+# checks python file first, does ALL '__init__(...).  Then does .kv file.
+#  size, & pos controlled by layout.  (Makes sense?)
+#  To control the size of a layout section automatically, use size_hint(val(0-1), val(0-1))
+#  To control the size of a layout section manually, set size_hint(None, None), then the size (in dp?)
+#  Setting the size_hint to None, makes a fixed size - can be set by user.
+#  Double size layout on Y-axis would be size_hint(1, 2)
+#  size_hint(.8, .2) is a proportion - 80% width, 20% height
+<ColsBtn@Button>:
+    size_hint: (None, None)
+    size: (125, 125)
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: 90
+            origin: self.center
+    canvas.after:
+        PopMatrix
+
+<Controller>:
+    label_wid: custom_label
+    BoxLayout:
+        id: left_layout
+        orientation: 'vertical'
+        padding: 20
+        pos: (92*12 + 125, (root.get_win_height() - 140 * root.get_num_children()))
+        height: 125
+        ColsBtn:
+#            size_hint: (None, None)
+#            size: (450, 125)
+            text: '2 to 1'  # 'My controller info is: ' + root.info
+            background_color: (0, 1, 0, 1)
+            on_press: root.do_action()
+        ColsBtn:
+#            size_hint: (None, None)
+#            size: (450, 125)
+            id: custom_label
+            background_color: (0, 1, 0, 1)
+            text: '2 to 1'  #'My label before button press'
+        ColsBtn:
+#            size_hint: (None, None)
+#            size: (450, 125)
+            text: '2 to 1'
+            background_color: (0, 1, 0, 1)
+            on_press: root.get_right_coords()
+
+<NumsBtn@Button>:
+    size_hint: (None, None)
+    height: 125
+
+<NumbersLayout>
+    GridLayout:
+        id: num_table_layout
+        padding: 20, -20, 0, 0
+        pos: (125, 780)
+        cols: 12
+        rows: 3
+        height: 125 * 3
+
+<Zeros>:
+    BoxLayout:
+        id: zeros_ref
+        orientation: 'vertical'
+        padding: [20, 0, 0, 0]
+
+<ZeroOnly>:
+    FloatLayout:
+        id: zero_only_ref
+        orientation: 'vertical'
+#        pos: (0, 780+20 + (125*3)/3) # keep for 00 (0, 780+20 + (125*3)/2)
+        padding: [20, 0, 0, 0]
+        ColsBtn:
+            id: zero_btn
+            text: '0'
+            width: (125*3)/2
+            on_press: print('pressed zero_only', self.pos, root.pos, self.size)
+
+<DoubleZero>:
+    FloatLayout:
+        id: double_zero_ref
+        orientation: 'vertical'
+        padding: [20, 0, 0, 0]
+
+        ColsBtn:
+            id: dbl_zero_btn
+            text: '00'
+            width: (125*3)/2
+            on_press: print('pressed dbl zero', root.x, root.y, self.pos)
+
+
+<ThirdsBtn@Button>:
+    size_hint: (None, None)
+    height: 125
+    background_color: (0, 1, 0, 1)
+    width: 92*4  #780-450 + 40
+
+<ThirdsLayout>
+    BoxLayout:
+        pos: (125, 780-125 + 19)
+        padding: [20, -20, 20, 0]
+        width: 92 * 12 + 1
+        ThirdsBtn:
+            text: '1st 12'
+        ThirdsBtn:
+            text: '2nd 12'
+        ThirdsBtn:
+            text: '3rd 12'
+
+<OutBtn@Button>:
+    size_hint_y: None
+    height: 125
+    background_color: (0, 1, 0, 1)
+    width:
+
+<OutsideLayout>
+    BoxLayout:
+        padding: [20, 20, 0, 0]
+        pos: (125, 780-250 + 19)
+        width: 92 * 12 + 20
+
+        OutBtn:
+            text: '1-18'
+        OutBtn:
+            text: 'Even'
+        OutBtn:
+            text: 'Red'
+            color: (1, 0, 0, 1)
+            bold: True
+        OutBtn:
+            text: 'Black'
+            color: (0, 0, 0, 1)
+            bold: True
+        OutBtn:
+            text: 'Odd'
+        OutBtn:
+            text: '19-36'
+
