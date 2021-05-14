@@ -1,5 +1,6 @@
 """ 
-    Layout practice using kivy 
+    Layout practice using kivy
+    Begin version 2 using new info learnt from freecodecamp Kivy.
 """
 
 from kivy.app import App
@@ -7,11 +8,14 @@ from kivy.properties import ObjectProperty, StringProperty, NumericProperty
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 from kivy.core.window import Window
-
+from kivy.utils import get_color_from_hex
 
 BLACK = (0, 0, 0, 1)
 RED = (128, 0, 0, 1)
 DARK_GREEN = (0, 100, 0, 1)
+BLACK_hex = '#000000'
+RED_hex = '#FF0000'
+DARK_GREEN_hex = '#228B22'  # forest green https://flaviocopes.com/rgb-color-codes/
 
 RED_NUMS = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
 BLACK_NUMS = [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35]
@@ -43,17 +47,37 @@ def create_cols(begin: int, end: int, step: int = 3):
     return [str(val) for val in sorted_nums]
 
 
-def create_button(data: int):
-    def get_color(num):
-        # red = get_color_from_hex(RED)
-        red = RED
-        # black = get_color_from_hex(BLACK)
-        black = BLACK
-        # green = get_color_from_hex(DARK_GREEN)
-        green = DARK_GREEN
-        return red if num in RED_NUMS else black if num in BLACK_NUMS else green
+def create_roulette_num_button_colors(data: int) -> Button:
+    """
+    Specifically creates the buttons of the roulette table for the number 1-36.  Assigns the appropriate colors.
+    :param data: int between 1-36
+    :return: kivy Button object
+    """
 
-    return Button(text=str(data), background_color=get_color(data))
+    def get_color(num: int, use_hex: bool = True) -> dict:
+        background_normal = dict()  # background-normal fixes quirky dark tint of buttons when using hex code.
+        if use_hex:
+            red = get_color_from_hex(RED_hex)
+            black = get_color_from_hex(BLACK_hex)
+            green = get_color_from_hex(DARK_GREEN_hex)
+            background_normal.update({'background_normal': ''})
+        else:
+            red = RED
+            black = BLACK
+            green = DARK_GREEN
+            background_normal = None
+
+        color_dict = {'color': red if num in RED_NUMS else black if num in BLACK_NUMS else green}
+        if background_normal is not None:
+            color_dict.update(background_normal)
+        return color_dict
+
+    color = get_color(data, False)
+    if 'background_normal' in color:  # .get('background_normal'):
+        return Button(text=str(data),
+                      background_color=color.get('color'),
+                      background_normal=str(color.get('background-normal')))
+    return Button(text=str(data), background_color=color.get('color'))
 
 
 class Controller(Widget):
@@ -87,7 +111,7 @@ class NumbersLayout(Widget):
 
         # number order according to roulette tables
         button_text = (tuple(create_cols(3, 36)) + tuple(create_cols(2, 35)) + tuple(create_cols(1, 34)))
-        buttons = [create_button(int(num)) for num in button_text]
+        buttons = [create_roulette_num_button_colors(int(num)) for num in button_text]
         table = self.ids.num_table_layout
         for btn in buttons:
             btn.size_hint = (None, None)
