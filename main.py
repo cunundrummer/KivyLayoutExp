@@ -24,15 +24,15 @@ EVEN = 2
 ODD = 1
 
 
-def is_even(num: int):
+def is_even(num: int) -> int:
     return num % 2
 
 
-def is_odd(num: int):
+def is_odd(num: int) -> int:
     return num % 1
 
 
-def create_cols(begin: int, end: int, step: int = 3):
+def create_cols(begin: int, end: int, step: int = 3) -> list:
     """
     Creates the inside values of the roulette wheel.
 
@@ -73,7 +73,7 @@ def create_roulette_num_button_colors(data: int) -> Button:
         return color_dict
 
     color = get_color(data, False)
-    if 'background_normal' in color:  # .get('background_normal'):
+    if 'background_normal' in color:
         return Button(text=str(data),
                       background_color=color.get('color'),
                       background_normal=str(color.get('background-normal')))
@@ -163,15 +163,16 @@ class Zeros(Widget):
         # self.add_widget(DoubleZero(pos=(self.x, self.y-125)))
         self.add_widget(DoubleZero(pos=(-15, 780+54)))
 
+
 class LayoutApp(App):
     def build(self):
         root = Controller(info='Hello Fool!')
         print('Window size:', Window.width, Window.height)
         # print('Root size:', root.width, root.height)
-        root.add_widget(NumbersLayout())
-        root.add_widget(ThirdsLayout())
-        root.add_widget(OutsideLayout())
-        root.add_widget(Zeros(is_euro=False))
+        # root.add_widget(NumbersLayout())
+        # root.add_widget(ThirdsLayout())
+        # root.add_widget(OutsideLayout())
+        # root.add_widget(Zeros(is_euro=False))
 
         return root
 
