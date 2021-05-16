@@ -58,8 +58,12 @@
             size_hint_y: 2
             id: numbers
         GreenCanvas:  # roulette board thirds
-            size_hint_y: .2
+            pos_hint: {'center_x': .5}
+            size_hint: (.75, .75)
+            id: thirds
         GreenCanvas:  # roulette board outsides
+            pos_hint: {'center_x': .5}
+            size_hint: (.75, .75)
 
 <NumbersLayout>:
     GridLayout:
@@ -67,6 +71,17 @@
         rows: 3
         id: num_table_layout
 
+<ThirdsLayout>:
+    GridLayout:
+        rows: 1
+        cols: 3
+        ThirdsBtn:
+        ThirdsBtn:
+        ThirdsBtn:
+
+<ThirdsBtn@Button>:
+    height: 125
+    background_color: (0, 1, 0, 1)
 
 #<Zeros>:
 #    BoxLayout:
@@ -99,11 +114,6 @@
 #            on_press: print('pressed dbl zero', root.x, root.y, self.pos)
 #
 #
-#<ThirdsBtn@Button>:
-#    size_hint: (None, None)
-#    height: 125
-#    background_color: (0, 1, 0, 1)
-#    width: 92*4  #780-450 + 40
 
 #<OutsideLayout>
 #    BoxLayout:

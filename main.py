@@ -132,8 +132,15 @@ class ZeroOnly(Widget):
         self.ids.zero_btn.pos = self.pos
 
 
-class ThirdsLayout(Widget):
-    pass
+class ThirdsLayout(GridLayout):  # also known as dozens
+    def __init__(self, **kwargs):
+        super(ThirdsLayout, self).__init__(**kwargs)
+        self.cols = 3
+        self.rows = 1
+        texts = ['1st 12', '2nd 12', '3rd 12']
+        texts.reverse()
+        for i, btn in enumerate(self.children[0].children):
+            btn.text = texts[i]
 
 
 class OutsideLayout(Widget):
@@ -174,6 +181,7 @@ class LayoutApp(App):
         root = MasterLayout()
         print(root.ids.main_content.ids)
         root.ids.main_content.ids.numbers.add_widget(NumbersLayout())
+        root.ids.main_content.ids.thirds.add_widget(ThirdsLayout())
         # root.add_widget(Zeros(is_euro=False))
 
         return root
