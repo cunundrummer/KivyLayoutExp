@@ -1,6 +1,6 @@
 #  IMPORTANT notes!!!
 
-# checks python file first, does ALL '__init__(...).  Then does .kv file.
+#  checks python file first, does ALL '__init__(...).  Then does .kv file.
 #  size, & pos controlled by layout.  (Makes sense?)
 #  To control the size of a layout section automatically, use size_hint(val(0-1), val(0-1))
 #  To control the size of a layout section manually, set size_hint(None, None), then the size (in dp?)
@@ -20,66 +20,54 @@
 <GreenBtn@RotatedButton>:
     background_color: (0, 1, 0, 1)
 
-<Controller>:  # master layout
-    BoxLayout: # zeros area
+<GreenCanvas@BoxLayout>:
+    canvas:
+        Color:
+            rgba: (.15, .4, 0, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+
+<MasterLayout>:  # master layout
+    BoxLayout:
         orientation: 'vertical'
-        GreenBtn:
-            text: '0'
-        GreenBtn:
-            text: '00'
+        HeadSpace:
+        MainContent:  # roulette board
+            id: main_content
+
+<HeadSpace@BoxLayout>:
+    size_hint: (1, .1)
+    pos_hint: {'top': 1}
+    canvas:
+        Color:
+            rgba: (0, .230, .06, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<MainContent@AnchorLayout>:
+    anchor_x: 'center'
+    anchor_y: 'top'
+    BoxLayout:
+        size_hint: (.75, .75)
+        orientation: 'vertical'
+        GreenCanvas:  # roulette board numbers
+            pos_hint: {'center_x': .5}
+            size_hint: (.75, .75)
+            size_hint_y: 2
+            id: numbers
+        GreenCanvas:  # roulette board thirds
+            size_hint_y: .2
+        GreenCanvas:  # roulette board outsides
+
+<NumbersLayout>:
+    GridLayout:
+        cols: 12
+        rows: 3
+        id: num_table_layout
 
 
-#<ColsBtn@Button>:
-#    size_hint: (None, None)
-#    size: (125, 125)
-#    canvas.before:
-#        PushMatrix
-#        Rotate:
-#            angle: 90
-#            origin: self.center
-#    canvas.after:
-#        PopMatrix
-#
-#<Controller>:
-#    label_wid: custom_label
-#    BoxLayout:
-#        id: left_layout
-#        orientation: 'vertical'
-#        padding: 20
-#        pos: (92*12 + 125, (root.get_win_height() - 140 * root.get_num_children()))
-#        height: 125
-#        ColsBtn:
-##            size_hint: (None, None)
-##            size: (450, 125)
-#            text: '2 to 1'  # 'My controller info is: ' + root.info
-#            background_color: (0, 1, 0, 1)
-#            on_press: root.do_action()
-#        ColsBtn:
-##            size_hint: (None, None)
-##            size: (450, 125)
-#            id: custom_label
-#            background_color: (0, 1, 0, 1)
-#            text: '2 to 1'  #'My label before button press'
-#        ColsBtn:
-##            size_hint: (None, None)
-##            size: (450, 125)
-#            text: '2 to 1'
-#            background_color: (0, 1, 0, 1)
-#            on_press: root.get_right_coords()
-#
-#<NumsBtn@Button>:
-#    size_hint: (None, None)
-#    height: 125
-#
-#<NumbersLayout>
-#    GridLayout:
-#        id: num_table_layout
-#        padding: 20, -20, 0, 0
-#        pos: (125, 780)
-#        cols: 12
-#        rows: 3
-#        height: 125 * 3
-#
 #<Zeros>:
 #    BoxLayout:
 #        id: zeros_ref
@@ -116,25 +104,7 @@
 #    height: 125
 #    background_color: (0, 1, 0, 1)
 #    width: 92*4  #780-450 + 40
-#
-#<ThirdsLayout>
-#    BoxLayout:
-#        pos: (125, 780-125 + 19)
-#        padding: [20, -20, 20, 0]
-#        width: 92 * 12 + 1
-#        ThirdsBtn:
-#            text: '1st 12'
-#        ThirdsBtn:
-#            text: '2nd 12'
-#        ThirdsBtn:
-#            text: '3rd 12'
-#
-#<OutBtn@Button>:
-#    size_hint_y: None
-#    height: 125
-#    background_color: (0, 1, 0, 1)
-#    width:
-#
+
 #<OutsideLayout>
 #    BoxLayout:
 #        padding: [20, 20, 0, 0]
