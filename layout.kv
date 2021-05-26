@@ -8,133 +8,164 @@
 #  Double size layout on Y-axis would be size_hint(1, 2)
 #  size_hint(.8, .2) is a proportion - 80% width, 20% height
 
-<RotatedButton@Button>:
+#:set BLACK (0, 0, 0, 1)
+#:set table_backcolor (0, .5, 0 , 1)
+#:set RED_NUMBER (1, 0, 0, 1)
+#:set RED_DARK (.5, 0, 0 , 1)
+#:set DARK_GREEN (0, .4, 0, 1)
+#:set GREEN (0, 1, 0, 1)
+#:set WHITE (1, 1, 1, 1)
+#:set NUMBER_HISTORY_COLOR (.108, .122, .137, 1)
+
+<TableBtn@Button>
     canvas.before:
-        PushMatrix
-        Rotate:
-            angle: 90
-            origin: self.center
-    canvas.after:
-        PopMatrix
-
-<GreenBtn@RotatedButton>:
-    background_color: (0, 1, 0, 1)
-
-<GreenCanvas@BoxLayout>:
-    canvas:
         Color:
-            rgba: (.15, .4, 0, 1)
+            rgba: WHITE
+        Line:
+            width: 2
+            rectangle: self.x, self.y, self.width+1, self.height+1
+    background_normal: ''
+    background_color: DARK_GREEN
+
+<Root>:
+    orientation: 'vertical'
+    size_hint: 1, 1
+    Header:
+    BoxLayout:  # spacer
+        size_hint: (1, .1)
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: .9, .25
+        pos_hint: {'center_x': .5}
+        GridLayout:  # Zeros
+            padding: 0, 0, 2, 0
+            size_hint: .1, 1
+            cols: 1
+            rows: 2
+            TableBtn:
+                text: '0'
+            TableBtn:
+                text: '00'
+        BoxLayout:
+            TableBox:
+        GridLayout:     # columns 2 to 1
+            size_hint: .1, 1
+            cols: 1
+            rows: 3
+            TableBtn:
+                text: '2 to 1'
+            TableBtn:
+                text: '2 to 1'
+            TableBtn:
+                text: '2 to 1'
+    BoxLayout:  # Outsides
+        orientation: 'vertical'
+        size_hint: (.7475, .175)
+        pos_hint: {'center_x': .5}
+        padding: 0, 3, 0, 0
+        GridLayout:  # dozens
+            rows: 1
+            cols: 3
+            TableBtn:
+                text: '1st 12'
+            TableBtn:
+                text: '2nd 12'
+            TableBtn:
+                text: '3rd 12'
+        GridLayout:
+            rows: 1
+            cols: 6
+            TableBtn:
+                text: '1-18'
+            TableBtn:
+                text: 'Odd'
+            TableBtn:
+                text: 'Red'
+                bold: True
+                color: RED_NUMBER
+            TableBtn:
+                text: 'Black'
+                bold: True
+                color: BLACK
+            TableBtn:
+                text: 'Even'
+            TableBtn:
+                text: '19-36'
+        BoxLayout:  # spacer
+            size_hint: (1, 1)
+    Footer:
+
+<TableBox>:
+    id: table_box_id
+    canvas.before:
+        Color:
+            rgba: (DARK_GREEN)
         Rectangle:
             pos: self.pos
             size: self.size
+    orientation: 'horizontal'
 
 
-<MasterLayout>:  # master layout
-    BoxLayout:
-        orientation: 'vertical'
-        HeadSpace:
-        MainContent:  # roulette board
-            id: main_content
+<NumbersGrid>:
+    canvas.before:
+        Color:
+            rgba: WHITE
+        Line:
+            width: 2
+            rectangle: self.x, self.y, self.width, self.height
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    id: numbers_grid
+    rows: 3
+    cols: 12
+    background_color: WHITE
 
-<HeadSpace@BoxLayout>:
+<NumberHistory>:
+    size_hint: (.1, 1)
+    canvas:
+        Color:
+            rgba: DARK_GREEN
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    GridLayout:
+        id: numbers_history_container
+        cols: 2
+
+<Header>:
     size_hint: (1, .1)
-    pos_hint: {'top': 1}
     canvas:
         Color:
-            rgba: (0, .230, .06, 1)
+            rgba: BLACK
         Rectangle:
             pos: self.pos
             size: self.size
-
-<MainContent@AnchorLayout>:
-    anchor_x: 'center'
-    anchor_y: 'top'
-    BoxLayout:
-        size_hint: (.75, .75)
-        orientation: 'vertical'
-        GreenCanvas:  # roulette board numbers
-            pos_hint: {'center_x': .5}
-            size_hint: (.75, .75)
-            size_hint_y: 2
-            id: numbers
-        GreenCanvas:  # roulette board thirds
-            pos_hint: {'center_x': .5}
-            size_hint: (.75, .75)
-            id: thirds
-        GreenCanvas:  # roulette board outsides
-            pos_hint: {'center_x': .5}
-            size_hint: (.75, .75)
-
-<NumbersLayout>:
     GridLayout:
-        cols: 12
-        rows: 3
-        id: num_table_layout
-
-<ThirdsLayout>:
-    GridLayout:
+        pos_hint: {'top': 1}
+        cols: 6
         rows: 1
-        cols: 3
-        ThirdsBtn:
-        ThirdsBtn:
-        ThirdsBtn:
+        Label:
+            text: 'col1'
+        Label:
+            text: 'col2'
+        Label:
+            text: 'col3'
+        Label:
+            text: 'col4'
+        Label:
+            text: 'col5'
+        Label:
+            text: 'col6'
 
-<ThirdsBtn@Button>:
-    height: 125
-    background_color: (0, 1, 0, 1)
-
-#<Zeros>:
-#    BoxLayout:
-#        id: zeros_ref
-#        orientation: 'vertical'
-#        padding: [20, 0, 0, 0]
-#
-#<ZeroOnly>:
-#    FloatLayout:
-#        id: zero_only_ref
-#        orientation: 'vertical'
-##        pos: (0, 780+20 + (125*3)/3) # keep for 00 (0, 780+20 + (125*3)/2)
-#        padding: [20, 0, 0, 0]
-#        ColsBtn:
-#            id: zero_btn
-#            text: '0'
-#            width: (125*3)/2
-#            on_press: print('pressed zero_only', self.pos, root.pos, self.size)
-#
-#<DoubleZero>:
-#    FloatLayout:
-#        id: double_zero_ref
-#        orientation: 'vertical'
-#        padding: [20, 0, 0, 0]
-#
-#        ColsBtn:
-#            id: dbl_zero_btn
-#            text: '00'
-#            width: (125*3)/2
-#            on_press: print('pressed dbl zero', root.x, root.y, self.pos)
-#
-#
-
-#<OutsideLayout>
-#    BoxLayout:
-#        padding: [20, 20, 0, 0]
-#        pos: (125, 780-250 + 19)
-#        width: 92 * 12 + 20
-#
-#        OutBtn:
-#            text: '1-18'
-#        OutBtn:
-#            text: 'Even'
-#        OutBtn:
-#            text: 'Red'
-#            color: (1, 0, 0, 1)
-#            bold: True
-#        OutBtn:
-#            text: 'Black'
-#            color: (0, 0, 0, 1)
-#            bold: True
-#        OutBtn:
-#            text: 'Odd'
-#        OutBtn:
-#            text: '19-36'
+<Footer>:
+    size_hint: (1, .1)
+    canvas:
+        Color:
+            rgba: BLACK
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Label:
+        text: 'Footer'
 
